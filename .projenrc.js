@@ -5,11 +5,14 @@ const project = new awscdk.AwsCdkConstructLibrary({
   cdkVersion: '2.1.0',
   defaultReleaseBranch: 'main',
   name: 'cdk-config-compliant',
-  repositoryUrl: 'https://github.com/hrfm.tsuzuki/cdk-config-compliant.git',
-
-  // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
-  // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
+  repositoryUrl: 'https://github.com/hrfmtzk/cdk-config-compliant.git',
+  description: 'AWS CDK Construct Library for compliant to Config',
+  deps: [],
+  devDeps: [],
+  publishToPypi: {
+    distName: 'cdk-config-compliant',
+    module: 'cdk_sample_lib',
+  },
+  stability: 'experimental',
 });
 project.synth();
