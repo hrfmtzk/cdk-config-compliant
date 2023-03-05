@@ -35,10 +35,14 @@ export interface IVpcDefaultSecurityGroupClosedProps {
 }
 
 export class VpcDefaultSecurityGroupClosed extends Construct {
+
+  private static readonly REVOKE_SG_FUNCTION_UUID = '3bbe4390-9075-41de-bbd3-412c3df8a391';
+
   constructor(scope: Construct, id: string, props: IVpcDefaultSecurityGroupClosedProps) {
     super(scope, id);
 
-    const revokeSgFunction = new lambda.Function(this, 'RevokeSgFunction', {
+    const revokeSgFunction = new lambda.SingletonFunction(this, 'RevokeSgFunction', {
+      uuid: VpcDefaultSecurityGroupClosed.REVOKE_SG_FUNCTION_UUID,
       code: lambda.Code.fromInline(RevokeSgFunctionCode),
       handler: 'index.handler',
       runtime: lambda.Runtime.PYTHON_3_9,
@@ -49,18 +53,6 @@ export class VpcDefaultSecurityGroupClosed extends Construct {
             'ec2:AuthorizeSecurityGroupEgress',
             'ec2:RevokeSecurityGroupIngress',
             'ec2:RevokeSecurityGroupEgress',
-          ],
-          resources: [
-            `arn:aws:ec2:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:security-gruop/*`,
-          ],
-          conditions: {
-            ArnEquals: {
-              'ec2:Vpc': `arn:aws:ec2:${cdk.Stack.of(this).region}:${cdk.Stack.of(this).account}:vpc/${props.vpc.vpcId}`,
-            },
-          },
-        }),
-        new iam.PolicyStatement({
-          actions: [
             'ec2:DescribeSecurityGroups',
             'ec2:DescribeVpcs',
           ],

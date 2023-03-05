@@ -14,6 +14,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'cdk_sample_lib',
   },
   stability: 'experimental',
-  github: false
+  github: false,
 });
 project.synth();
